@@ -5,6 +5,11 @@ requires = [
 	]
 build-backend = "flit_core.buildapi"
 
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]
+
 [project]
 name = "hmm"
 authors = [{name = "Wanjun Gu", email = "wanjun.gu@ucsf.edu"}]
