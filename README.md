@@ -14,6 +14,12 @@ For a helpful refresher on HMMs and the Forward and Viterbi Algorithms you can c
 
 
 
+## Method Overview
+
+1. **Initialization**: The model is initialized with the sets of observable states (e.g., sunny, rainy) and hidden states. It also requires three matrices: prior probabilities of the hidden states, transition probabilities between hidden states, and emission probabilities from hidden states to observable states.
+2. **Forward Algorithm**: This method calculates the likelihood of a sequence of observed weather conditions. It does so by iteratively computing probabilities of sequences up to each point in time, considering all possible paths that could lead to the current observation. The final probability is a summation of the probabilities of all paths that could produce the observed sequence, providing a measure of how well the model explains the observed weather conditions.
+3. **Viterbi Algorithm**: This method finds the most probable sequence of hidden states given a sequence of observations. It is particularly useful in predicting the underlying weather conditions (hidden states) that are most likely to result in the observed sequence of weather conditions (e.g., a sequence of sunny and rainy days). The algorithm uses dynamic programming to efficiently compute the best path through the hidden states that accounts for the highest probability sequence of observed states.
+
 
 
 ## Tasks and Data 
