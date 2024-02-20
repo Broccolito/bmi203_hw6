@@ -1,6 +1,8 @@
 import pytest
 from hmm import HiddenMarkovModel
 import numpy as np
+from hmmlearn import hmm
+import math
 
 def test_mini_weather():
     """
@@ -32,8 +34,22 @@ def test_mini_weather():
     forward_probability = hmm_mini.forward(observation_sequence)
     viterbi_sequence = hmm_mini.viterbi(observation_sequence)
 
+    # Calculate forward probability using the Hmmlearn module
+    n_components = len(hidden_states)
+    model = hmm.CategoricalHMM(n_components=n_components)
+    model.startprob_ = prior_p
+    model.transmat_ = transition_p
+    model.emissionprob_ = emission_p
+    observation_sequence = np.array(observation_sequence)
+    # Map your observations to integer values
+    observation_map = {state: index for index, state in enumerate(observation_states)}
+    observed_sequence = np.array([observation_map[state] for state in observation_sequence]).reshape(-1, 1)
+    logscore_hmmlearn = model.score(observed_sequence)
+    logscore_hmm = np.log(forward_probability)
+
     assert all(viterbi_sequence == best_hidden_state_sequence)
-   
+    assert math.isclose(logscore_hmmlearn, logscore_hmm, rel_tol=1e-5)
+
     pass
 
 
@@ -66,8 +82,21 @@ def test_full_weather():
     forward_probability = hmm_full.forward(observation_sequence)
     viterbi_sequence = hmm_full.viterbi(observation_sequence)
 
-    assert all(viterbi_sequence == best_hidden_state_sequence)
+    # Calculate forward probability using the Hmmlearn module
+    n_components = len(hidden_states)
+    model = hmm.CategoricalHMM(n_components=n_components)
+    model.startprob_ = prior_p
+    model.transmat_ = transition_p
+    model.emissionprob_ = emission_p
+    observation_sequence = np.array(observation_sequence)
+    # Map your observations to integer values
+    observation_map = {state: index for index, state in enumerate(observation_states)}
+    observed_sequence = np.array([observation_map[state] for state in observation_sequence]).reshape(-1, 1)
+    logscore_hmmlearn = model.score(observed_sequence)
+    logscore_hmm = np.log(forward_probability)
 
+    assert all(viterbi_sequence == best_hidden_state_sequence)
+    assert math.isclose(logscore_hmmlearn, logscore_hmm, rel_tol=1e-5)
 
     pass
 
