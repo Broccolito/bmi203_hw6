@@ -41,7 +41,10 @@ class HiddenMarkovModel:
             forward_probability (float): forward probability (likelihood) for the input observed sequence  
         """        
         
-         # Step 1. Initialize variables
+        if(len(input_observation_states)<1):
+            raise ValueError("The number of input observations cannot be 0.") 
+
+        # Step 1. Initialize variables
         alpha = np.zeros((len(input_observation_states), len(self.hidden_states)))
 
         first_obs_index = self.observation_states_dict[input_observation_states[0]]
@@ -72,6 +75,9 @@ class HiddenMarkovModel:
             best_hidden_state_sequence(list): most likely list of hidden states that generated the sequence observed states
         """        
         
+        if(len(decode_observation_states)<1):
+            raise ValueError("The number of input observations cannot be 0.") 
+
         # Step 1. Initialize variables
         T = len(decode_observation_states)
         N = len(self.hidden_states)
